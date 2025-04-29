@@ -45,6 +45,11 @@ const upload = multer({ storage });
 
 // Routes
 
+// Serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html')); // Adjust the path as necessary
+});
+
 // POST: Upload new article
 app.post('/api/articles', upload.single('image'), async (req, res) => {
   try {
