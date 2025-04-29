@@ -10,7 +10,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(__dirname)); // Serve static files from the root directory
 app.use('/uploads', express.static('uploads')); // Serve uploaded images
 
 // MongoDB Connection
@@ -28,7 +28,7 @@ const articleSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   imageUrl: { type: String }
-}, { timestamps: true }); // Automatically adds createdAt and updatedAt
+}, { timestamps: true });
 
 const Article = mongoose.model('Article', articleSchema);
 
@@ -47,7 +47,17 @@ const upload = multer({ storage });
 
 // Serve index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html')); // Adjust the path as necessary
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve admin.html
+app.get('/admin.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Serve news.html
+app.get('/news.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'news.html'));
 });
 
 // POST: Upload new article
@@ -97,15 +107,4 @@ app.delete('/api/articles/:id', async (req, res) => {
 
     await Article.findByIdAndDelete(id);
 
-    res.status(200).json({ message: 'Article deleted successfully' });
-  } catch (err) {
-    console.error('Error deleting article:', err);
-    res.status(500).json({ error: 'Failed to delete article' });
-  }
-});
-
-// Start Server
-const PORT = 6000;
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+    res.status(200).json({ message:
