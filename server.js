@@ -18,7 +18,7 @@ mongoose.connect('mongodb+srv://amazonsharingfriends:RqmrnqZOHHEu34cM@newtest.ia
   .then(() => console.log('Connected to MongoDB Atlas!'))
   .catch((err) => console.error('Error connecting to MongoDB Atlas', err));
 
-// Create uploads folder if not exists
+// Create uploads folder if it doesn't exist
 if (!fs.existsSync('./uploads')) {
   fs.mkdirSync('./uploads');
 }
@@ -28,7 +28,7 @@ const articleSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   imageUrl: { type: String }
-}, { timestamps: true });
+}, { timestamps: true }); // Automatically adds createdAt and updatedAt
 
 const Article = mongoose.model('Article', articleSchema);
 
@@ -47,17 +47,17 @@ const upload = multer({ storage });
 
 // Serve index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html')); // Serve the home page
 });
 
 // Serve admin.html
 app.get('/admin.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin.html'));
+  res.sendFile(path.join(__dirname, 'admin.html')); // Serve the admin page
 });
 
 // Serve news.html
 app.get('/news.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'news.html'));
+  res.sendFile(path.join(__dirname, 'news.html')); // Serve the news page
 });
 
 // POST: Upload new article
@@ -97,7 +97,7 @@ app.delete('/api/articles/:id', async (req, res) => {
       return res.status(404).json({ error: 'Article not found' });
     }
 
-    // Also remove the image file if exists
+    // Also remove the image file if it exists
     if (article.imageUrl) {
       const imagePath = path.join(__dirname, article.imageUrl);
       if (fs.existsSync(imagePath)) {
@@ -107,4 +107,15 @@ app.delete('/api/articles/:id', async (req, res) => {
 
     await Article.findByIdAndDelete(id);
 
-    res.status(200).json({ message:
+    res.status(200).json({ message: 'Article deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting article:', err);
+    res.status(500).json({ error: 'Failed to delete article' });
+  }
+});
+
+// Start Server
+const PORT = process.env.PORT || 30000; // Use the port from environment variable or default to 30000
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
