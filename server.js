@@ -4,13 +4,14 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const fsPromises = require('fs/promises');
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname)); // Serve static files from the root directory
+app.use(express.static('public'));
 app.use('/uploads', express.static('uploads')); // Serve uploaded images
 
 // MongoDB Connection
@@ -18,7 +19,7 @@ mongoose.connect('mongodb+srv://amazonsharingfriends:RqmrnqZOHHEu34cM@newtest.ia
   .then(() => console.log('Connected to MongoDB Atlas!'))
   .catch((err) => console.error('Error connecting to MongoDB Atlas', err));
 
-// Create uploads folder if it doesn't exist
+// Create uploads folder if not exists
 if (!fs.existsSync('./uploads')) {
   fs.mkdirSync('./uploads');
 }
@@ -28,7 +29,7 @@ const articleSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   imageUrl: { type: String }
-}, { timestamps: true }); // Automatically adds createdAt and updatedAt
+}, { timestamps: true });
 
 const Article = mongoose.model('Article', articleSchema);
 
@@ -43,21 +44,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Routes
-
 // Serve index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html')); // Serve the home page
-});
-
-// Serve admin.html
-app.get('/admin.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin.html')); // Serve the admin page
-});
-
-// Serve news.html
-app.get('/news.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'news.html')); // Serve the news page
+  res.sendFile(path.join(__dirname, 'index.html')); // Adjust the path as necessary
 });
 
 // POST: Upload new article
@@ -79,7 +68,7 @@ app.post('/api/articles', upload.single('image'), async (req, res) => {
 // GET: Fetch all articles (newest first)
 app.get('/api/articles', async (req, res) => {
   try {
-    const articles = await Article.find().sort({ createdAt: -1 }); // newest first
+    const articles = await Article.find().sort({ createdAt: -1 });
     res.json(articles);
   } catch (err) {
     console.error('Error fetching articles:', err);
@@ -87,7 +76,7 @@ app.get('/api/articles', async (req, res) => {
   }
 });
 
-// DELETE: Delete article by ID
+// DELETE: Delete article by ID and remove image
 app.delete('/api/articles/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -97,17 +86,19 @@ app.delete('/api/articles/:id', async (req, res) => {
       return res.status(404).json({ error: 'Article not found' });
     }
 
-    // Also remove the image file if it exists
+    // Remove the image file if it exists
     if (article.imageUrl) {
-      const imagePath = path.join(__dirname, article.imageUrl);
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
+      const imagePath = path.join(__dirname, 'uploads', path.basename(article.imageUrl));
+      try {
+        await fsPromises.unlink(imagePath);
+        console.log('Image file deleted:', imagePath);
+      } catch (err) {
+        console.warn('Image file not found or could not be deleted:', err.message);
       }
     }
 
     await Article.findByIdAndDelete(id);
-
-    res.status(200).json({ message: 'Article deleted successfully' });
+    res.status(200).json({ message: 'Article and image deleted successfully' });
   } catch (err) {
     console.error('Error deleting article:', err);
     res.status(500).json({ error: 'Failed to delete article' });
@@ -115,7 +106,7 @@ app.delete('/api/articles/:id', async (req, res) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 30000; // Use the port from environment variable or default to 30000
+const PORT = 30000;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
