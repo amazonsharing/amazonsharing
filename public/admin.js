@@ -77,3 +77,43 @@ async function deleteArticle(id) {
 
 // Load articles on page start
 loadArticles();
+
+
+
+
+
+
+
+// Form Toggle
+document.querySelector('.toggle-form').addEventListener('click', function() {
+  const formCard = document.querySelector('.form-card');
+  formCard.classList.toggle('collapsed');
+  this.textContent = formCard.classList.contains('collapsed') ? '+' : '−';
+});
+
+// Real-time Search
+document.getElementById('search').addEventListener('input', function(e) {
+  const query = e.target.value.toLowerCase();
+  document.querySelectorAll('.article-item').forEach(item => {
+    const title = item.querySelector('h3').textContent.toLowerCase();
+    item.style.display = title.includes(query) ? 'block' : 'none';
+  });
+});
+
+// Expandable Articles (assumes articles have .article-item with h3, p, small)
+document.getElementById('articleList').addEventListener('click', function(e) {
+  const item = e.target.closest('.article-item');
+  if (item) item.classList.toggle('expanded');
+});
+
+// Example: Form Validation (add to existing form submission logic)
+document.getElementById('uploadForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const title = document.getElementById('title').value;
+  const content = document.getElementById('content').value;
+  if (title && content) {
+    // Add your article submission logic here
+    alert('Article published!');
+    this.reset();
+  }
+});
