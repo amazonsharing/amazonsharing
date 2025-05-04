@@ -42,10 +42,10 @@ function openModal(article) {
 }
 
 // Close Popup Modal
-
 function closeModal() {
   document.getElementById('articleModal').style.display = "none";
 }
+
 // Close popup when clicking outside modal-content
 window.onclick = function(event) {
   const modal = document.getElementById('articleModal');
