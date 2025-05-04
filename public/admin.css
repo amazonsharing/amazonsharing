@@ -1,0 +1,83 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #f9f9f9;
+    color: #333;
+  }
+  
+  header {
+    background: #d90429;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .form-section, .manage-section {
+    padding: 2rem;
+  }
+  
+  form input, form textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 1rem;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background: #d90429;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    background: #a6031c;
+  }
+  
+  #articleList {
+    margin-top: 20px;
+  }
+  
+  .article-item {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    position: relative;
+  }
+  
+  .article-item h3 {
+    margin: 0;
+    color: #d90429;
+  }
+  
+  .article-item p {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .article-item small {
+    color: #999;
+  }
+  
+  .delete-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  
+  .delete-btn:hover {
+    background: #e60000;
+  }
+  
