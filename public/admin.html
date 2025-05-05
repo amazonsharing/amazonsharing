@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel - Manage Articles</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <header>Admin Panel</header>
+
+  <section class="form-section">
+    <h2>Upload New Article</h2>
+    <form id="uploadForm">
+      <input type="text" id="title" placeholder="Title" required><br>
+      <textarea id="content" placeholder="Content" required></textarea>
+      <input type="file" id="image"><br>
+      <button type="Post">Post</button><br>
+      <note><p1 style="color: red;"><strong>NOTE:</strong></p1> <p2>Only upload images.</p2></note>
+
+    </form>
+  </section>
+
+  <section class="manage-section">
+    <h2>Manage Existing Articles</h2>
+    <div id="articleList"></div>
+  </section>
+
+  <script src="admin.js"></script>
+</body>
+</html>
