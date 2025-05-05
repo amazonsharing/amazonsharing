@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MOTO</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav>
+    <a href="https://www.example.com" class="logo">Motorsport Exclusive</a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="menu-items" id="menuItems">
+      <a href="#">Formula</a>
+      <a href="#">NASCAR</a>
+      <a href="#">INDYCAR</a>
+      <a href="#">LEMANS</a>
+    </div>
+  </nav>
+<h1 style="text-align: center;color: bisque;">Grand Prix motorcycle racing</h1>
+  <div id="articlesContainer" class="news-container"></div>
+
+  <!-- Popup Modal -->
+  <div id="articleModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img id="modalImage" src="" alt="Image 🔃">
+      <h2 id="modalTitle"></h2>
+      <p id="modalContent"></p>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menuItems');
+      menu.classList.toggle('show');
+    }
+  </script>
+</body>
+<!-- Bottom Navigation Bar -->
+<div class="bottom-nav">
+  <a href="#">Schedule</a>
+  <a href="#">Standings</a>
+  <a href="#">Constructors</a>
+  <a href="#">Teams</a>
+</div>
+<!-- Bottom Navigation Bar -->
+</html>
